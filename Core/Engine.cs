@@ -17,7 +17,7 @@ namespace Core
         {
             get
             {
-                var optionsBuilder = new DbContextOptionsBuilder<EmoContext>();
+                var optionsBuilder = new DbContextOptionsBuilder<PluginContext>();
                 optionsBuilder.UseSqlServer(this.ConnectionString);
                 return new EmoContext(optionsBuilder.Options);
             }
