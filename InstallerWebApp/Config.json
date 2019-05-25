@@ -1,0 +1,5 @@
+﻿{
+  "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Emo22;Integrated Security=True;Persist Security Info=False",
+  "Plugins": [],
+  "SystemInstalled": true
+}
