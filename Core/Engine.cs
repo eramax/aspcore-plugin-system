@@ -13,20 +13,13 @@ namespace Core
     {
         private readonly IConfiguration _configuration;
 
-        public IEmoContext Context
-        {
-            get
-            {
-                var optionsBuilder = new DbContextOptionsBuilder<PluginContext>();
-                optionsBuilder.UseSqlServer(this.ConnectionString);
-                return new EmoContext(optionsBuilder.Options);
-            }
-        }
-
+        public IEmoContext Context => new EmoContext(this.ContextOptions);
         public string ConnectionString { get; private set; }
         public List<PluginDescriptor> Plugins { get; private set; }
         public bool SystemInstalled { get; private set; }
 
+        public DbContextOptions<PluginContext> ContextOptions => 
+            new DbContextOptionsBuilder<PluginContext>().UseSqlServer(ConnectionString).Options;
 
         public Engine(IConfiguration configuration)
         {

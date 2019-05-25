@@ -20,6 +20,11 @@ namespace SharedKernel.Data
 
         #region Methods
 
+        public virtual bool InstallContext()
+        {
+            return ExecuteSqlCommand(GenerateCreateScript()) > 0;
+        }
+
         /// <summary>
         /// Generate a script to create all tables for the current model
         /// </summary>
