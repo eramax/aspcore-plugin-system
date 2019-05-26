@@ -7,7 +7,7 @@ namespace SharedKernel.IServices
     public interface IPluginService
     {
         IEnumerable<Plugin> LoadPlugins();
-        bool InstallPlugin(IFieldInfo file);
+        bool InstallPlugin(string file);
         bool UninstallPlugin(Plugin plugin);
     }
 }

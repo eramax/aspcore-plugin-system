@@ -8,7 +8,7 @@ using SharedKernel.IServices;
 using SharedKernel.Models;
 using SharedKernel.Plugins;
 
-namespace Services.Installer
+namespace Core.Services.Installer
 {
     public class InstallService : IInstallService
     {
@@ -24,7 +24,7 @@ namespace Services.Installer
             var model = new DbDataModel
             {
                 SqlAuthenticationType = "windowsauthentication",
-                SqlDatabaseName = "Emo22",
+                SqlDatabaseName = "Emo23",
                 SqlServerName = @".\SQLEXPRESS",
                 SqlServerUsername = "",
                 SqlServerPassword = ""
@@ -41,32 +41,32 @@ namespace Services.Installer
                 SystemInstalled = true,
                 Plugins = new List<PluginDescriptor>()
             };
-            conf.SaveToFile("Config.json");
 
-            _engine.Reload();
-            if (!SqlServerDatabaseExists(connectionString))
+            _engine.LoadnSaveConfigs(conf);
+            CreateDatabase();
+            InitializeDatabase();
+        }
+        //create database
+        public virtual void CreateDatabase(string collation = "")
+        {
+            if (!SqlServerDatabaseExists(_engine.ConnectionString))
             {
-                //create database
-                var collation = string.Empty;
-                var errorCreatingDatabase = CreateDatabase(connectionString, collation);
+                var errorCreatingDatabase = CreateDatabase(_engine.ConnectionString, collation);
                 if (!string.IsNullOrEmpty(errorCreatingDatabase))
                     throw new Exception(errorCreatingDatabase);
-
             }
-
-            InitializeDatabase(_engine.Context);
         }
 
         /// <summary>
         /// Initialize database
         /// </summary>
-        public virtual void InitializeDatabase(IEmoContext context)
+        public virtual void InitializeDatabase()
         {
             try
             {
                 //create tables
-                var tables = context.GenerateCreateScript();
-                context.ExecuteSqlScript(tables);
+                var tables = _engine.Context.GenerateCreateScript();
+                _engine.Context.ExecuteSqlScript(tables);
             }
             catch (Exception e)
             {

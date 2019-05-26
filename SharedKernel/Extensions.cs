@@ -11,6 +11,19 @@ namespace System
 {
     public static class Extensions
     {
+        public static string AppendDir(this string path, string new_dir) =>
+            path.EndsWith('\\') ? path + new_dir : path + "\\" + new_dir;
+        public static string New(this Guid guid, int length) => Guid.NewGuid().ToString("N").Substring(0, length);
+        public static bool IsNullOrEmptyGuid(this Guid? guid)
+        {
+            bool isNullorEmptyGuid = false;
+
+            if (guid == null || guid == Guid.Empty)
+                isNullorEmptyGuid = true;
+
+            return isNullorEmptyGuid;
+        }
+
         public static T Retry<T>(this Func<T> func, Func<T, bool> condition, int retryCount = 3)
         {
             for (int i = 0; i < retryCount; i++)
@@ -32,7 +45,7 @@ namespace System
         public static void SaveToFile(this object obj, string filename)
         {
             string filePath = Environment.CurrentDirectory + @"\\" + filename;
-            FileIO.CreateFile(filePath);
+            FileManager.CreateFile(filePath);
             //save data to the file
             File.WriteAllText(filePath, obj.ToJson(), Encoding.UTF8);
         }

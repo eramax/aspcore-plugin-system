@@ -1,17 +1,16 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Core;
 using Core.Middlewares;
+using Core.Services.Installer;
+using Core.Services.Plugins;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Services.Installer;
 using SharedKernel.Data;
 using SharedKernel.Engines;
 using SharedKernel.IServices;
@@ -48,6 +47,7 @@ namespace InstallerWebApp
             services.AddHttpContextAccessor();
             services.TryAddSingleton<IEngine, Engine>();
             services.TryAddSingleton<IInstallService, InstallService>();
+            services.TryAddSingleton<IPluginService, PluginService>();
             services.TryAddTransient(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();

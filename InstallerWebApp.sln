@@ -5,15 +5,13 @@ VisualStudioVersion = 16.0.28917.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InstallerWebApp", "InstallerWebApp\InstallerWebApp.csproj", "{26D4879C-8974-492A-B138-7F791ECD9310}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel", "SharedKernel\SharedKernel.csproj", "{F8804BAE-31A9-4C8B-9BF4-792014B7CA08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedKernel", "SharedKernel\SharedKernel.csproj", "{F8804BAE-31A9-4C8B-9BF4-792014B7CA08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{1588A19A-3BBC-4E58-9860-0BA5328293D3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{DF949892-0119-4F83-B9A0-55DF8EB08D62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{1588A19A-3BBC-4E58-9860-0BA5328293D3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{51212994-199B-4A9E-821B-958194E29E21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaypalPaymentPlugin", "Plugins\PaypalPaymentPlugin\PaypalPaymentPlugin.csproj", "{6FC7808C-5B5C-4EAD-9721-7FDAFD0FF348}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaypalPaymentPlugin", "Plugins\PaypalPaymentPlugin\PaypalPaymentPlugin.csproj", "{6FC7808C-5B5C-4EAD-9721-7FDAFD0FF348}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +31,6 @@ Global
 		{1588A19A-3BBC-4E58-9860-0BA5328293D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1588A19A-3BBC-4E58-9860-0BA5328293D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1588A19A-3BBC-4E58-9860-0BA5328293D3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF949892-0119-4F83-B9A0-55DF8EB08D62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF949892-0119-4F83-B9A0-55DF8EB08D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF949892-0119-4F83-B9A0-55DF8EB08D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF949892-0119-4F83-B9A0-55DF8EB08D62}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6FC7808C-5B5C-4EAD-9721-7FDAFD0FF348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6FC7808C-5B5C-4EAD-9721-7FDAFD0FF348}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FC7808C-5B5C-4EAD-9721-7FDAFD0FF348}.Release|Any CPU.ActiveCfg = Release|Any CPU

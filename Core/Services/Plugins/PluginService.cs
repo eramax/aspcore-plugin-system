@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters;
-using System.Text;
 using SharedKernel.Engines;
+using SharedKernel.Helpers;
 using SharedKernel.IServices;
 using SharedKernel.Plugins;
 
-namespace Core.Plugins
+namespace Core.Services.Plugins
 {
     public class PluginService : IPluginService
     {
@@ -37,8 +36,11 @@ namespace Core.Plugins
             return null;
         }
 
-        public bool InstallPlugin(IFieldInfo file)
+        public bool InstallPlugin(string archivefile)
         {
+            var plugindir = new Guid().New(12);
+            FileManager.ExtractZipToDirectory(archivefile, _engine.PluginsDirectory.AppendDir(plugindir));
+            
             // extract file to plugins folder
             // install context
             // 

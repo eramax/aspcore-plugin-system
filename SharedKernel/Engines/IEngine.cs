@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Data;
+using SharedKernel.Models;
 using SharedKernel.Plugins;
 
 namespace SharedKernel.Engines
@@ -11,7 +12,10 @@ namespace SharedKernel.Engines
         IEmoContext Context { get; }
         string ConnectionString { get;  }
         List<PluginDescriptor> Plugins { get; }
-        void Reload();
+        void LoadnSaveConfigs(Config conf);
         DbContextOptions<PluginContext> ContextOptions { get; }
+        string RootDirectory { get; }
+        string WwwRootDirectory { get; }
+        string PluginsDirectory { get; }
     }
 }

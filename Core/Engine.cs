@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SharedKernel.Data;
@@ -12,29 +13,44 @@ namespace Core
     public class Engine : IEngine
     {
         private readonly IConfiguration _configuration;
-
+        private readonly IHostingEnvironment _env;
+        private Config _conf { get; set; }
         public IEmoContext Context => new EmoContext(this.ContextOptions);
-        public string ConnectionString { get; private set; }
-        public List<PluginDescriptor> Plugins { get; private set; }
-        public bool SystemInstalled { get; private set; }
+        public string ConnectionString => _conf?.ConnectionString;
+        public List<PluginDescriptor> Plugins => _conf?.Plugins;
+        public bool SystemInstalled => _conf.NotNull() ? _conf.SystemInstalled : false;
+        public string RootDirectory { get; private set; }
+        public string WwwRootDirectory { get; private set; }
+        public string PluginsDirectory { get; private set; }
 
         public DbContextOptions<PluginContext> ContextOptions => 
             new DbContextOptionsBuilder<PluginContext>().UseSqlServer(ConnectionString).Options;
 
-        public Engine(IConfiguration configuration)
+        public Engine(IConfiguration configuration, IHostingEnvironment env)
         {
             _configuration = configuration;
-            Reload();
+            _env = env;
+            LoadConfigs();
         }
 
-        public void Reload()
+        void LoadConfigs()
         {
             Func<Config> func = () => _configuration.Get<Config>();
-            Config conf = func.Retry(x => x.ConnectionString != null, 100);
+            _conf = func.Retry(x => x.ConnectionString != null, 100);
 
-            Plugins = conf.Plugins;
-            ConnectionString = conf.ConnectionString;
-            SystemInstalled = conf.SystemInstalled;
+            RootDirectory = _env.ContentRootPath;
+            WwwRootDirectory = _env.WebRootPath;
+            PluginsDirectory = WwwRootDirectory + @"\plugins\";
+        }
+
+        public void LoadnSaveConfigs(Config conf)
+        {
+            _conf = conf;
+            conf.SaveToFile("Config.json");
+
+            RootDirectory = _env.ContentRootPath;
+            WwwRootDirectory = _env.WebRootPath;
+            PluginsDirectory = WwwRootDirectory + @"\plugins\";
         }
 
         public T Resolve<T>() where T : class

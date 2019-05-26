@@ -1,4 +1,4 @@
-﻿namespace Services.Installer
+﻿namespace Core.Services.Installer
 {
     public class DbDataModel
     {
