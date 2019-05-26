@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Loader;
+using Core.Services.Plugins;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.EntityFrameworkCore;
@@ -78,26 +80,21 @@ namespace Core
             {
                 try
                 {
-                    assembly = Assembly.LoadFrom(file);
+                    assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(file);
+                    if (assembly != null)
+                    {
+                        _partManager.ApplicationParts.Add(new AssemblyPart(assembly));
+                        // Notify change
+                        MyActionDescriptorChangeProvider.Instance.HasChanged = true;
+                        MyActionDescriptorChangeProvider.Instance.TokenSource.Cancel();
+                    }
                 }
                 catch (FileLoadException)
                 {
-                    if (useUnsafeLoadAssembly)
-                    {
-                        //if an application has been copied from the web, it is flagged by Windows as being a web application,
-                        //even if it resides on the local computer.You can change that designation by changing the file properties,
-                        //or you can use the<loadFromRemoteSources> element to grant the assembly full trust.As an alternative,
-                        //you can use the UnsafeLoadFrom method to load a local assembly that the operating system has flagged as
-                        //having been loaded from the web.
-                        //see http://go.microsoft.com/fwlink/?LinkId=155569 for more information.
-                        assembly = Assembly.UnsafeLoadFrom(file);
-                    }
-                    else
-                        throw;
                 }
 
                 //register the plugin definition
-                _partManager.ApplicationParts.Add(new AssemblyPart(assembly));
+                //_partManager.ApplicationParts.Add(new AssemblyPart(assembly));
             }
 
             return true;

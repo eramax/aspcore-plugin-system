@@ -21,7 +21,7 @@ namespace PaypalPaymentPlugin
 
         public override bool Load()
         {
-            services.AddTransient<IPaypalService, PaypalService>();
+            //services.AddTransient<IPaypalService, PaypalService>();
             return true;
         }
 

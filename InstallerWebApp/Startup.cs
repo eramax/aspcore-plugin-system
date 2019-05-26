@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -50,19 +49,10 @@ namespace InstallerWebApp
             services.TryAddSingleton<IInstallService, InstallService>();
             services.TryAddSingleton<IPluginService, PluginService>();
             services.TryAddTransient(typeof(IRepository<>), typeof(Repository<>));
-
-            
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            var PartManager = services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).PartManager;
-
-            services.TryAddSingleton<ApplicationPartManager>(PartManager);
-
-            //services.AddScoped<IUrlHelper>(x =>
-            //{
-            //    var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
-            //    var factory = x.GetRequiredService<IUrlHelperFactory>();
-            //    return factory.GetUrlHelper(actionContext);
-            //});
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSingleton<IActionDescriptorChangeProvider>(MyActionDescriptorChangeProvider.Instance);
+            services.AddSingleton(MyActionDescriptorChangeProvider.Instance);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

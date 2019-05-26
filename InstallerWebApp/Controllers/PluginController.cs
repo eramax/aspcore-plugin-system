@@ -29,5 +29,15 @@ namespace InstallerWebApp.Controllers
             _service.InstallPlugin(plugin1);
             return Redirect("/");
         }
+
+        public IActionResult Load()
+        {
+            var plugin1 = new string[]
+            {
+                @"C:\Users\eramax\source\repos\InstallerWebApp\Plugins\PaypalPaymentPlugin\bin\Debug\netcoreapp2.2\PaypalPaymentPlugin.dll"
+            };
+            _engine.LoadAssembly(plugin1);
+            return RedirectToAction("Index", "PaypalPay");
+        }
     }
 }
