@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Data;
 using SharedKernel.Models;
@@ -17,5 +18,6 @@ namespace SharedKernel.Engines
         string RootDirectory { get; }
         string WwwRootDirectory { get; }
         string PluginsDirectory { get; }
+        bool LoadAssembly(string[] assemblyFiles, bool useUnsafeLoadAssembly = false);
     }
 }

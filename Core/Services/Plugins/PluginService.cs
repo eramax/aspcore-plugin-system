@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using SharedKernel.Engines;
 using SharedKernel.Helpers;
 using SharedKernel.IServices;
@@ -38,9 +41,10 @@ namespace Core.Services.Plugins
 
         public bool InstallPlugin(string archivefile)
         {
-            var plugindir = new Guid().New(12);
-            FileManager.ExtractZipToDirectory(archivefile, _engine.PluginsDirectory.AppendDir(plugindir));
-            
+            var plugindir = _engine.PluginsDirectory.AppendDir(new Guid().New(12));
+            FileManager.ExtractZipToDirectory(archivefile, plugindir);
+            var dllFiles = FileManager.GetFiles(plugindir);
+            _engine.LoadAssembly(dllFiles);
             // extract file to plugins folder
             // install context
             // 
@@ -55,5 +59,7 @@ namespace Core.Services.Plugins
             // call uninstall on this plugin
             return true;
         }
+
+        
     }
 }

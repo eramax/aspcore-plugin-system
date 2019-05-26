@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -50,8 +51,12 @@ namespace InstallerWebApp
             services.TryAddSingleton<IPluginService, PluginService>();
             services.TryAddTransient(typeof(IRepository<>), typeof(Repository<>));
 
+            
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            var PartManager = services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).PartManager;
+
+            services.TryAddSingleton<ApplicationPartManager>(PartManager);
+
             //services.AddScoped<IUrlHelper>(x =>
             //{
             //    var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;

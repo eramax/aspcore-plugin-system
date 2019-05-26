@@ -7,22 +7,25 @@ namespace PaypalPaymentPlugin.Controllers
 {
     public class PaypalPayController : Controller
     {
-        private readonly IEngine _engine;
-        private readonly IPaypalService _service;
-        public PaypalPayController(IEngine engine, IPaypalService service)
+        
+        //private readonly IEngine _engine;
+        //private readonly IPaypalService _service;
+        public PaypalPayController()
         {
-            _engine = engine;
-            _service = service;
+           // _engine = engine;
+            //_service = service;
         }
 
         public IActionResult Index()
         {
-            return Ok(_service.Test().ToJson());
+            return Ok("Hello Form Plugin");
+            //return Ok(_service.Test().ToJson());
         }
 
         public IActionResult Plugins()
         {
-            return Ok(_engine.Plugins.ToJson());
+            return Ok("Hello Form Plugin");
+            //return Ok(_engine.Plugins.ToJson());
         }
 
     }
