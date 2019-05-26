@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 using SharedKernel.Helpers;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using SharedKernel.Data;
@@ -11,6 +13,12 @@ namespace System
 {
     public static class Extensions
     {
+        public static Type FindClassOf<T>(this Assembly assembly, params object[] args) where T : class
+        {
+            return assembly.GetTypes()
+                .Where(x => typeof(T).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
+                .FirstOrDefault();
+        }
         public static string AppendDir(this string path, string new_dir) =>
             path.EndsWith('\\') ? path + new_dir : path + "\\" + new_dir;
         public static string New(this Guid guid, int length) => Guid.NewGuid().ToString("N").Substring(0, length);
@@ -39,6 +47,7 @@ namespace System
 
         public static bool NotNull(this object obj) => obj != null;
         public static bool IsNull(this object obj) => obj == null;
+        public static T FromJson<T>(this T obj, string json) => JsonConvert.DeserializeObject<T>(FileManager.ReadAllText(json));
         public static string ToJson(this object obj) => JsonConvert.SerializeObject(obj, Formatting.Indented,
             new JsonSerializerSettings() {ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
 
@@ -51,57 +60,7 @@ namespace System
         }
 
 
-        /// <summary>
-        /// Execute commands from the SQL script against the context database
-        /// </summary>
-        /// <param name="context">Database context</param>
-        /// <param name="sql">SQL script</param>
-        public static void ExecuteSqlScript(this IEmoContext context, string sql)
-        {
-            if (context == null)
-                throw new ArgumentNullException(nameof(context));
-
-            var sqlCommands = GetCommandsFromScript(sql);
-            foreach (var command in sqlCommands)
-                context.ExecuteSqlCommand(command);
-        }
-
-        private static IList<string> GetCommandsFromScript(string sql)
-        {
-            var commands = new List<string>();
-
-            //origin from the Microsoft.EntityFrameworkCore.Migrations.SqlServerMigrationsSqlGenerator.Generate method
-            sql = Regex.Replace(sql, @"\\\r?\n", string.Empty);
-            var batches = Regex.Split(sql, @"^\s*(GO[ \t]+[0-9]+|GO)(?:\s+|$)",
-                RegexOptions.IgnoreCase | RegexOptions.Multiline);
-
-            for (var i = 0; i < batches.Length; i++)
-            {
-                if (string.IsNullOrWhiteSpace(batches[i]) ||
-                    batches[i].StartsWith("GO", StringComparison.OrdinalIgnoreCase))
-                    continue;
-
-                var count = 1;
-                if (i != batches.Length - 1 && batches[i + 1].StartsWith("GO", StringComparison.OrdinalIgnoreCase))
-                {
-                    var match = Regex.Match(batches[i + 1], "([0-9]+)");
-                    if (match.Success)
-                        count = int.Parse(match.Value);
-                }
-
-                var builder = new StringBuilder();
-                for (var j = 0; j < count; j++)
-                {
-                    builder.Append(batches[i]);
-                    if (i == batches.Length - 1)
-                        builder.AppendLine();
-                }
-
-                commands.Add(builder.ToString());
-            }
-
-            return commands;
-        }
+      
     }
 
     /// <summary>

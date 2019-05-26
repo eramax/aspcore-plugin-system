@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Paypal Payment",
+  "Dependencies": null,
+  "Version": 1.0,
+  "SupportedVersion": 1.0,
+  "Desctiption": "This plugin is used to make paypal payments",
+  "Logo": null,
+  "Author": "Ahmed Esam",
+  "MainDll": "PaypalPaymentPlugin"
+}

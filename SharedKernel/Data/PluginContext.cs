@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SharedKernel.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SharedKernel.Data
 {
@@ -22,7 +25,8 @@ namespace SharedKernel.Data
 
         public virtual bool InstallContext()
         {
-            return ExecuteSqlCommand(GenerateCreateScript()) > 0;
+            ExecuteSqlScript(GenerateCreateScript());
+            return true;
         }
 
         /// <summary>
@@ -65,6 +69,55 @@ namespace SharedKernel.Data
             Database.SetCommandTimeout(previousTimeout);
 
             return result;
+        }
+
+        /// <summary>
+        /// Execute commands from the SQL script against the context database
+        /// </summary>
+        /// <param name="context">Database context</param>
+        /// <param name="sql">SQL script</param>
+        public virtual void ExecuteSqlScript(string sql)
+        {
+            var sqlCommands = GetCommandsFromScript(sql);
+            foreach (var command in sqlCommands)
+                ExecuteSqlCommand(command);
+        }
+
+        private static IList<string> GetCommandsFromScript(string sql)
+        {
+            var commands = new List<string>();
+
+            //origin from the Microsoft.EntityFrameworkCore.Migrations.SqlServerMigrationsSqlGenerator.Generate method
+            sql = Regex.Replace(sql, @"\\\r?\n", string.Empty);
+            var batches = Regex.Split(sql, @"^\s*(GO[ \t]+[0-9]+|GO)(?:\s+|$)",
+                RegexOptions.IgnoreCase | RegexOptions.Multiline);
+
+            for (var i = 0; i < batches.Length; i++)
+            {
+                if (string.IsNullOrWhiteSpace(batches[i]) ||
+                    batches[i].StartsWith("GO", StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                var count = 1;
+                if (i != batches.Length - 1 && batches[i + 1].StartsWith("GO", StringComparison.OrdinalIgnoreCase))
+                {
+                    var match = Regex.Match(batches[i + 1], "([0-9]+)");
+                    if (match.Success)
+                        count = int.Parse(match.Value);
+                }
+
+                var builder = new StringBuilder();
+                for (var j = 0; j < count; j++)
+                {
+                    builder.Append(batches[i]);
+                    if (i == batches.Length - 1)
+                        builder.AppendLine();
+                }
+
+                commands.Add(builder.ToString());
+            }
+
+            return commands;
         }
 
         /// <summary>

@@ -1,5 +1,23 @@
 ﻿{
   "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Emo23;Integrated Security=True;Persist Security Info=False",
-  "Plugins": [],
+  "Plugins": [
+    {
+      "Active": true,
+      "Installed": true,
+      "MainDll": "C:\\Users\\eramax\\source\\repos\\InstallerWebApp\\InstallerWebApp\\wwwroot\\plugins\\595ecf0f5c8c\\PaypalPaymentPlugin.dll",
+      "OtherDlls": null,
+      "Uninstallable": true,
+      "PluginInfo": {
+        "Name": "Paypal Payment",
+        "Dependencies": null,
+        "Version": 1.0,
+        "SupportedVersion": 1.0,
+        "Desctiption": "This plugin is used to make paypal payments",
+        "Logo": null,
+        "Author": "Ahmed Esam",
+        "MainDll": "PaypalPaymentPlugin"
+      }
+    }
+  ],
   "SystemInstalled": true
 }

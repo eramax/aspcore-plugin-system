@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SharedKernel.Plugins
+﻿namespace SharedKernel.Plugins
 {
     public interface IPlugin
     {
-
+        bool Install();
+        bool Uninstall();
+        bool Load();
     }
 }

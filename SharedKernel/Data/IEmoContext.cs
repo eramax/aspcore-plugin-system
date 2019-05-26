@@ -15,5 +15,7 @@ namespace SharedKernel.Data
 
         void Detach<TEntity>(TEntity entity) where TEntity : BaseEntity;
         IQueryable<TQuery> QueryFromSql<TQuery>(string sql, params object[] parameters) where TQuery : class;
+        void ExecuteSqlScript(string sql);
+
     }
 }

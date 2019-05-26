@@ -35,14 +35,7 @@ namespace Core.Services.Installer
                 model.SqlServerName, model.SqlDatabaseName,
                 model.SqlServerUsername, model.SqlServerPassword);
 
-            var conf = new Config
-            {
-                ConnectionString = connectionString,
-                SystemInstalled = true,
-                Plugins = new List<PluginDescriptor>()
-            };
-
-            _engine.LoadnSaveConfigs(conf);
+            _engine.SetConnectionString(connectionString);
             CreateDatabase();
             InitializeDatabase();
         }

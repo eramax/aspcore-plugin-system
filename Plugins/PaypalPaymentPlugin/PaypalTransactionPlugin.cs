@@ -9,19 +9,22 @@ namespace PaypalPaymentPlugin
 {
     public class PaypalTransactionPlugin : Plugin
     {
-        public PaypalTransactionPlugin(IEngine engine, IServiceCollection services) : base(engine, services)
+        public PaypalTransactionPlugin(IEngine engine) : base(engine)
         {
         }
 
         public override bool Install()
         {
             //---- install Context
-            return new PaypalTranscationContext(engine.ContextOptions).InstallContext();
+            new PaypalTranscationContext(engine.ContextOptions).InstallContext();
+            Load();
+            return true;
         }
 
         public override bool Load()
         {
-            //services.AddTransient<IPaypalService, PaypalService>();
+            //engine.ServiceCollection.AddSingleton<IPaypalService, PaypalService>();
+            engine.RegisterSignleTone<IPaypalService, PaypalService>();
             return true;
         }
 

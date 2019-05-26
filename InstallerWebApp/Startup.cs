@@ -42,7 +42,7 @@ namespace InstallerWebApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
+            services.AddSingleton(services);
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddHttpContextAccessor();
             services.TryAddSingleton<IEngine, Engine>();

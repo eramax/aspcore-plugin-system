@@ -452,11 +452,11 @@ namespace SharedKernel.Helpers
         /// <param name="path">The file to open for reading</param>
         /// <param name="encoding">The encoding applied to the contents of the file</param>
         /// <returns>A string containing all lines of the file</returns>
-        public static string ReadAllText(string path, Encoding encoding)
+        public static string ReadAllText(string path)
         {
             using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                using (var streamReader = new StreamReader(fileStream, encoding))
+                using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
                 {
                     return streamReader.ReadToEnd();
                 }

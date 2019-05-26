@@ -25,9 +25,9 @@ namespace InstallerWebApp.Controllers
 
         public IActionResult Install1()
         {
-            var plugin1 = "C:\\dlls\\PaypalPaymentPlugin.zip";
+            var plugin1 = @"C:\Users\eramax\source\repos\InstallerWebApp\Plugins\PaypalPaymentPlugin\bin\Debug\netcoreapp2.2\netcoreapp2.2.zip";
             _service.InstallPlugin(plugin1);
-            return Redirect("/");
+            return RedirectToAction("Index", "PaypalPay");
         }
 
         public IActionResult Load()
